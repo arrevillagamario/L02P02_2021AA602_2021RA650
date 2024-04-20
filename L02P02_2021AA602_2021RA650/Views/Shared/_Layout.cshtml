@@ -25,19 +25,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Autores" asp-action="Index">Autore</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Libro" asp-action="Index">Libro</a>
+                        </li>
+
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-    <ul class="progressbar">
-            <li><a asp-controller="Home" asp-action="Privacy">Hola</a></li>
-        <li>Libros</li>
-        <li class="active">Comentarios Existentes</li>
-        <li>Nuevo Comentario</li>
-    </ul>
-</div>
+    
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
