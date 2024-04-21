@@ -1,35 +1,47 @@
 ﻿@model IEnumerable<L02P02_2021AA602_2021RA650.Models.Autore>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Autores";
 }
 
-<h1>Index</h1>
+<div></div>
+<div class="container">
+    <ul class="progressbar">
+        <li class="active">Autores</li>
+        <li>Libros</li>
+        <li>Comentarios Existentes</li>
+        <li>Nuevo Comentario</li>
+    </ul>
+</div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Autor)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
+<div class="border border-1 p-4 rounded rounded-1 m-5" style="margin-top:auto">
+    <h1 style="color:#504cca">Autor</h1>
+    @foreach (var item in Model)
+    {
+        <div class="d-flex justify-content-between border border-1 p-2 rounded-1">
+            <div>
                 @Html.DisplayFor(modelItem => item.Autor)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+            </div>
+            <div>
+                <button class="btn btn-success seleccionar-autor" data-id="@item.Id">Seleccionar</button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".seleccionar-autor").click(function () {
+                var autorId = $(this).data("id");
+                window.location.href = "/Autores/Seleccionar?autorId=" + autorId;
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>
+
+
+
+
+

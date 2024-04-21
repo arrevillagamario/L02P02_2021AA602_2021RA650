@@ -9,22 +9,23 @@ using L02P02_2021AA602_2021RA650.Models;
 
 namespace L02P02_2021AA602_2021RA650.Controllers
 {
-    public class AutoresController : Controller
+    public class ComentariosLibroesController : Controller
     {
         private readonly LibreriaDbContext _context;
 
-        public AutoresController(LibreriaDbContext context)
+        public ComentariosLibroesController(LibreriaDbContext context)
         {
             _context = context;
         }
 
-        // GET: Autores
+        // GET: ComentariosLibroes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Autores.ToListAsync());
+            var libreriaDbContext = _context.ComentariosLibros.Include(c => c.IdLibroNavigation);
+            return View(await libreriaDbContext.ToListAsync());
         }
 
-        // GET: Autores/Details/5
+        // GET: ComentariosLibroes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,48 +33,42 @@ namespace L02P02_2021AA602_2021RA650.Controllers
                 return NotFound();
             }
 
-            var autore = await _context.Autores
+            var comentariosLibro = await _context.ComentariosLibros
+                .Include(c => c.IdLibroNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (autore == null)
+            if (comentariosLibro == null)
             {
                 return NotFound();
             }
 
-            return View(autore);
+            return View(comentariosLibro);
         }
 
-        // GET: Autores/Create
+        // GET: ComentariosLibroes/Create
         public IActionResult Create()
         {
+            ViewData["IdLibro"] = new SelectList(_context.Libros, "Id", "Id");
             return View();
         }
 
-        // POST: Autores/Create
+        // POST: ComentariosLibroes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Autor")] Autore autore)
+        public async Task<IActionResult> Create([Bind("Id,IdLibro,Comentarios,Usuario,CreatedAt")] ComentariosLibro comentariosLibro)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(autore);
+                _context.Add(comentariosLibro);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(autore);
+            ViewData["IdLibro"] = new SelectList(_context.Libros, "Id", "Id", comentariosLibro.IdLibro);
+            return View(comentariosLibro);
         }
 
-        public IActionResult Seleccionar(int autorId)
-        {
-            ViewData["nombreAutor"] = _context.Autores.FirstOrDefault(a => a.Id == autorId).Autor;
-            var librosPorAutor = _context.Libros.Where(l => l.IdAutor == autorId).ToList();
-
-
-            return View("~/Views/Libroes/Index.cshtml", librosPorAutor);
-        }
-
-        // GET: Autores/Edit/5
+        // GET: ComentariosLibroes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,22 +76,23 @@ namespace L02P02_2021AA602_2021RA650.Controllers
                 return NotFound();
             }
 
-            var autore = await _context.Autores.FindAsync(id);
-            if (autore == null)
+            var comentariosLibro = await _context.ComentariosLibros.FindAsync(id);
+            if (comentariosLibro == null)
             {
                 return NotFound();
             }
-            return View(autore);
+            ViewData["IdLibro"] = new SelectList(_context.Libros, "Id", "Id", comentariosLibro.IdLibro);
+            return View(comentariosLibro);
         }
 
-        // POST: Autores/Edit/5
+        // POST: ComentariosLibroes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Autor")] Autore autore)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,IdLibro,Comentarios,Usuario,CreatedAt")] ComentariosLibro comentariosLibro)
         {
-            if (id != autore.Id)
+            if (id != comentariosLibro.Id)
             {
                 return NotFound();
             }
@@ -105,12 +101,12 @@ namespace L02P02_2021AA602_2021RA650.Controllers
             {
                 try
                 {
-                    _context.Update(autore);
+                    _context.Update(comentariosLibro);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AutoreExists(autore.Id))
+                    if (!ComentariosLibroExists(comentariosLibro.Id))
                     {
                         return NotFound();
                     }
@@ -121,10 +117,11 @@ namespace L02P02_2021AA602_2021RA650.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(autore);
+            ViewData["IdLibro"] = new SelectList(_context.Libros, "Id", "Id", comentariosLibro.IdLibro);
+            return View(comentariosLibro);
         }
 
-        // GET: Autores/Delete/5
+        // GET: ComentariosLibroes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,34 +129,35 @@ namespace L02P02_2021AA602_2021RA650.Controllers
                 return NotFound();
             }
 
-            var autore = await _context.Autores
+            var comentariosLibro = await _context.ComentariosLibros
+                .Include(c => c.IdLibroNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (autore == null)
+            if (comentariosLibro == null)
             {
                 return NotFound();
             }
 
-            return View(autore);
+            return View(comentariosLibro);
         }
 
-        // POST: Autores/Delete/5
+        // POST: ComentariosLibroes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var autore = await _context.Autores.FindAsync(id);
-            if (autore != null)
+            var comentariosLibro = await _context.ComentariosLibros.FindAsync(id);
+            if (comentariosLibro != null)
             {
-                _context.Autores.Remove(autore);
+                _context.ComentariosLibros.Remove(comentariosLibro);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AutoreExists(int id)
+        private bool ComentariosLibroExists(int id)
         {
-            return _context.Autores.Any(e => e.Id == id);
+            return _context.ComentariosLibros.Any(e => e.Id == id);
         }
     }
 }
