@@ -18,9 +18,23 @@ namespace L02P02_2021AA602_2021RA650.Controllers
             _context = context;
         }
 
-        // GET: ComentariosLibroes
-        public async Task<IActionResult> Index()
+
+        public IActionResult SeleccionarLibro(int libroId)
         {
+
+            var comentariosLibro = _context.ComentariosLibros.Where(c => c.IdLibro == libroId).ToList();
+
+
+            return View("~/Views/ComentariosLibroes/Index.cshtml", comentariosLibro);
+        }
+
+
+
+        // GET: ComentariosLibroes
+        public async Task<IActionResult> Index(int id)
+        {
+
+            ViewData["nombreLibro"] = _context.Libros.FirstOrDefault(l => l.Id == id).Nombre;
             var libreriaDbContext = _context.ComentariosLibros.Include(c => c.IdLibroNavigation);
             return View(await libreriaDbContext.ToListAsync());
         }
