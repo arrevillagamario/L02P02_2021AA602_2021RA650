@@ -11,13 +11,15 @@
 <body>
     <header>
         <div style="background-color: #22252c;">
-            <img src="/img/UNICAES_Logo.png" width="100px" height="auto" style="margin-top: 50px; margin-left: 650px;" />
+            <div class="d-flex justify-content-center">
+                <img src="/img/UNICAES_Logo.png" width="100px" height="auto"  />
+            </div>
             <p style="color: aliceblue; text-align: center; font-size: 30px; padding-top: 10px;"> Comentarios por Libros</p>
             <p style="color: aliceblue; text-align: center; font-weight: lighter; font-size: 15px; padding-bottom: 30px; margin-top: -10px;"> Seleccione el autor ->Seleccione el libro -> Se muestran los comentarios existentes -> Adicione un nuevo comentario</p>
 
         </div>
     </header>
-    
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

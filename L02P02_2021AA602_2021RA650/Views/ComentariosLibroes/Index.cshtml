@@ -56,8 +56,10 @@
             <h4>Comentario</h4>
             <textarea name="" id="" cols="30" style="height:200px; width:100%" rows="100"></textarea>
             <div class="border border-1 p-3">
-                <button class="btn btn-success w-100">Guardar Comentario</button>
-            </div>
+            <button class="btn btn-success w-100" style="text-decoration:none;">
+                @Html.ActionLink("Guardar Comentario", "Index", "Confirmacion", null, new { @class = "btn btn-success seleccionar-libro", style = "color:white;" })
+            </button>
+        </div>
         </div>
     </div>
 </div>
